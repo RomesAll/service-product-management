@@ -1,7 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import SecretStr
 from redis import Redis
-from logging_config import *
+from .logging_config import *
 
 class Base(BaseSettings):
     model_config = SettingsConfigDict(env_file='../../.env', extra='ignore')

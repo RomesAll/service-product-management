@@ -10,6 +10,9 @@ class LoggingSettings:
     def create_formatter(format: str = "%(asctime)s - %(name)s - %(module)s - %(levelname)s - %(message)s"):
         return logging.Formatter(format)
 
+    def set_level(self, level: Literal["CRITICAL", "FATAL", "ERROR", "WARNING", "INFO", "DEBUG", "NOTSET"]):
+        self.logger.setLevel(level)
+
     def get_logger(self):
         return self.logger
 
