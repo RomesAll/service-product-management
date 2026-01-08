@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import SecretStr
 from redis import Redis
+from logging_config import *
 
 class Base(BaseSettings):
     model_config = SettingsConfigDict(env_file='../../.env', extra='ignore')
@@ -45,5 +46,6 @@ class Settings(BaseSettings):
     postgres: PostgresSettings = PostgresSettings()
     rabbitmq: RabbitMQSettings = RabbitMQSettings()
     redis: RedisSettings = RedisSettings()
+    logging_setup: logging.Logger = logging_setup.get_logger()
 
 settings = Settings()
