@@ -14,6 +14,11 @@ services:
       interval: 1m30s
       timeout: 2s
       retries: 3
+    links:
+      - "postgres:db_host"
+      - "postgres_test:db_host"
+      - "rabbitmq_products:rmq_host"
+      - "redis_products:redis_host"
     networks:
       - dbnet
     depends_on:
