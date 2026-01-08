@@ -1,10 +1,12 @@
 from fastapi import FastAPI
+from core.config import settings
 import uvicorn
 
 app = FastAPI()
 
 @app.get("/health-check")
 def health_check():
+    settings.logger.info("Health check")
     return {"status": "ok"}
 
 if __name__ == "__main__":

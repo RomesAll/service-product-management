@@ -4,7 +4,7 @@ from redis import Redis
 from .logging_config import *
 
 class Base(BaseSettings):
-    model_config = SettingsConfigDict(env_file='../../.env', extra='ignore')
+    model_config = SettingsConfigDict(env_file='../.env', extra='ignore')
 
 class RedisSettings(Base):
     REDIS_HOST: str

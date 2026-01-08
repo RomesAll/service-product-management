@@ -4,10 +4,13 @@ services:
     image: service_product_management
     container_name: service_product_management
     hostname: product_management
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     volumes:
       - "./app:/services/app"
+      - "./test:/services/test"
     restart: "on-failure"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://0.0.0.0:8000/health-check"]
@@ -28,7 +31,10 @@ services:
   postgres:
     image: postgres:17-alpine
     container_name: postgres
-    env_file: ".env"
+    environment:
+      - POSTGRES_USER:${POSTGRES_USER}
+      - POSTGRES_PASSWORD:${POSTGRES_PASSWORD}
+      - POSTGRES_DB:${POSTGRES_DB}
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
@@ -37,7 +43,10 @@ services:
   postgres_test:
     image: postgres:17-alpine
     container_name: postgres_test
-    env_file: ".test.env"
+    environment:
+      - POSTGRES_USER:${POSTGRES_USER}
+      - POSTGRES_PASSWORD:${POSTGRES_PASSWORD}
+      - POSTGRES_DB:${POSTGRES_DB}
     volumes:
       - postgres-data-test:/var/lib/postgresql/data
     networks:
