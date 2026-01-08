@@ -52,6 +52,41 @@ services:
       - postgres
       - postgres_test
 
+  rabbitmq_products:
+    image: rabbitmq:3.12-management-alpine
+    hostname: rabbitmq_products
+    container_name: rabbitmq_products
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      - RABBITMQ_DEFAULT_USER:${RMQ_USER}
+      - RABBITMQ_DEFAULT_PASS:${RMQ_PASS}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - dbnet
+
+  redis_products:
+    image: redis:latest
+    hostname: redis_products
+    container_name: redis_products
+    ports:
+      - "6381:6379"
+    volumes:
+      - redis-data:/data
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_USER=${REDIS_USER}
+      - REDIS_USER_PASSWORD=${REDIS_USER_PASSWORD}
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-a", "$REDIS_PASSWORD", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - dbnet
+
 networks:
   dbnet:
     driver: bridge
@@ -59,3 +94,5 @@ networks:
 volumes:
   postgres-data-test:
   postgres-data:
+  rabbitmq-data:
+  redis-data:
