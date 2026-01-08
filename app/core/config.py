@@ -46,6 +46,6 @@ class Settings(BaseSettings):
     postgres: PostgresSettings = PostgresSettings()
     rabbitmq: RabbitMQSettings = RabbitMQSettings()
     redis: RedisSettings = RedisSettings()
-    logging_setup: logging.Logger = logging_setup.get_logger()
+    logger: logging.Logger = logging_setup.get_logger()
 
 settings = Settings()
