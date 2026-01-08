@@ -1,0 +1,16 @@
+services:
+  service_product_management:
+    build: .
+    image: service_product_management
+    container_name: service_product_management
+    hostname: product_management
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./app:/services/app"
+    restart: "on-failure"
+    healthcheck:
+      test: ["CMD", "curl", "http://0.0.0.0:8000/health-check"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
