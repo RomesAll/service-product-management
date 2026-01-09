@@ -13,7 +13,7 @@ services:
       - "./test:/services/test"
     restart: "on-failure"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://0.0.0.0:8000/health-check"]
+      test: curl -f http://0.0.0.0:8000/health-check || exit 1
       interval: 1m30s
       timeout: 2s
       retries: 3
