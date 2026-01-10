@@ -17,7 +17,7 @@ def get_session():
 def encode_jwt(payload: dict,
                algorithm: str = settings.auth.algorithm,
                private_key = settings.auth.private_key_path.read_text(),
-               expire_in: int = settings.auth.expire_in):
+               expire_in: int = settings.auth.access_token_exp):
     update_payload = payload.copy()
     update_payload['exp'] = datetime.now(tz=timezone.utc) + timedelta(seconds=expire_in)
     update_payload['iat'] = datetime.now(tz=timezone.utc)
