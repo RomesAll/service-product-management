@@ -5,7 +5,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 class ProcurementOrm(Base):
     __tablename__ = 'procurements'
-    id = Column(UUID(as_uuid=True), primary_key=True, nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, nullable=False, autoincrement=False)
     product_id: Mapped[int] = mapped_column(ForeignKey('products.id', ondelete='SET NULL'))
     price: Mapped[float]
     count_products: Mapped[int]

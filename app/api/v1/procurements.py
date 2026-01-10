@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request
-from app.service import ProcurementService, ProcurementPOSTSchemas, ProcurementPUTSchemas
-from app.utils.helpers import session_dep, pagination_dep
+from app.service import ProcurementService
+from app.schemas import *
+from app.utils import session_dep, pagination_dep
 import uuid
 
 router = APIRouter(prefix="/procurements", tags=["Procurements"])

@@ -1,5 +1,2 @@
-__all__ = ('ProductsOrm', 'TypeProductOrm', 'ProcurementOrm',
-           'ProductsRepository', 'TypeProductRepository', 'ProcurementRepository', 'PaginationParams')
-from .products import (ProductsOrm, TypeProductOrm, ProcurementOrm,
-                       ProductsRepository, TypeProductRepository,
-                       ProcurementRepository, PaginationParams)
+__all__ = ('ProductsRepository', 'TypeProductRepository', 'ProcurementRepository')
+from .products import (ProcurementRepository, TypeProductRepository, ProductsRepository)
