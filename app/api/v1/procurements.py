@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request
-from app.service.products import ProcurementService
+from app.service import ProcurementService, ProcurementPOSTSchemas
 from app.utils.helpers import session_dep, pagination_dep
 import uuid
 
@@ -13,4 +13,9 @@ def get_all_records(request: Request, session: session_dep, pagination: paginati
 @router.get('/{id}')
 def get_records_by_id(request: Request, id: uuid.UUID, session: session_dep):
     result = ProcurementService(session, request.client.host).get_records_by_id(id)
+    return {'message': result}
+
+@router.post('/')
+def create_records(request: Request, dto_model: ProcurementPOSTSchemas, session: session_dep):
+    result = ProcurementService(session, request.client.host).create_records(dto_model)
     return {'message': result}

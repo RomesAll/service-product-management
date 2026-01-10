@@ -1,5 +1,6 @@
-from app.repositories import ProductsRepository, TypeProductRepository, ProcurementRepository, PaginationParams
-from app.schemas.products import *
+from app.repositories import (ProductsOrm, TypeProductOrm, ProcurementOrm, ProductsRepository,
+                              TypeProductRepository, ProcurementRepository)
+from app.schemas import *
 from sqlalchemy.orm import Session
 import uuid
 
@@ -19,6 +20,11 @@ class ProductsService:
         dto_model = ProductsGETSchemas.model_validate(orm_model, from_attributes=True)
         return dto_model
 
+    def create_records(self, dto_model: ProductsPOSTSchemas):
+        orm_model = ProductsOrm(**dto_model.model_dump())
+        result = ProductsRepository(self.session, self.client).create_records(orm_model)
+        return ProductsGETSchemas.model_validate(result, from_attributes=True)
+
 class TypeProductService:
 
     def __init__(self, session, client):
@@ -35,6 +41,11 @@ class TypeProductService:
         dto_models = TypeProductGETSchemas.model_validate(orm_models, from_attributes=True)
         return dto_models
 
+    def create_records(self, dto_model: TypeProductPOSTSchemas):
+        orm_model = TypeProductOrm(**dto_model.model_dump())
+        result = TypeProductRepository(self.session, self.client).create_records(orm_model)
+        return TypeProductGETSchemas.model_validate(result, from_attributes=True)
+
 class ProcurementService:
 
     def __init__(self, session, client):
@@ -50,3 +61,8 @@ class ProcurementService:
         orm_models = ProcurementRepository(self.session, self.client).get_records_by_id(id)
         dto_models = ProcurementGETSchemas.model_validate(orm_models, from_attributes=True)
         return dto_models
+
+    def create_records(self, dto_model: ProcurementPOSTSchemas):
+        orm_model = ProcurementOrm(**dto_model.model_dump())
+        result = ProcurementRepository(self.session, self.client).create_records(orm_model)
+        return ProcurementGETSchemas.model_validate(result, from_attributes=True)

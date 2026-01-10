@@ -21,7 +21,7 @@ class ProductsRepository:
         self.session.add(orm_model)
         self.session.flush()
         self.session.commit()
-        return orm_model.id
+        return orm_model
 
 class TypeProductRepository:
 
@@ -41,7 +41,7 @@ class TypeProductRepository:
         self.session.add(orm_model)
         self.session.flush()
         self.session.commit()
-        return orm_model.id
+        return orm_model
 
 class ProcurementRepository:
 
@@ -61,4 +61,4 @@ class ProcurementRepository:
         self.session.add(orm_model)
         self.session.flush()
         self.session.commit()
-        return orm_model.id
+        return orm_model
