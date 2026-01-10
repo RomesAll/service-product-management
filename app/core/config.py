@@ -49,10 +49,18 @@ class RabbitMQSettings(Base):
         return (f'amqp://{self.RMQ_USER}:{self.RMQ_PASS.get_secret_value()}@'
                 f'{self.RMQ_HOST}:{self.RMQ_PORT}')
 
+class AuthTokenSettings(Base):
+    private_key_path: Path = BASE_DIR / 'app' / 'certs' / 'jwt-private.pem'
+    public_key_path: Path = BASE_DIR / 'app' / 'certs' / 'jwt-public.pem'
+    algorithm: str = 'RS256'
+    access_token_exp: int = 60 # second
+    refresh_token_exp: int = 120 # second
+
 class Settings(BaseSettings):
     postgres: PostgresSettings = PostgresSettings()
     rabbitmq: RabbitMQSettings = RabbitMQSettings()
     redis: RedisSettings = RedisSettings()
+    auth: AuthTokenSettings = AuthTokenSettings()
     logger: logging.Logger = logging_setup.get_logger()
 
 settings = Settings()
