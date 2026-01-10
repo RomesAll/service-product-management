@@ -32,6 +32,12 @@ class ProductsRepository:
         self.session.commit()
         return updating_model
 
+    def delete_records(self, id: int):
+        deleting_model = self.session.query(ProductsOrm).filter(ProductsOrm.id == int(id)).one_or_none()
+        self.session.delete(deleting_model)
+        self.session.commit()
+        return deleting_model
+
 class TypeProductRepository:
 
     def __init__(self, session, client):
@@ -61,6 +67,12 @@ class TypeProductRepository:
         self.session.commit()
         return updating_model
 
+    def delete_records(self, id: int):
+        deleting_model = self.session.query(TypeProductOrm).filter(TypeProductOrm.id == int(id)).one_or_none()
+        self.session.delete(deleting_model)
+        self.session.commit()
+        return deleting_model
+
 class ProcurementRepository:
 
     def __init__(self, session, client):
@@ -89,3 +101,9 @@ class ProcurementRepository:
                 setattr(updating_model, key, value)
         self.session.commit()
         return updating_model
+
+    def delete_records(self, id: uuid.UUID):
+        deleting_model = self.session.query(ProcurementOrm).filter(ProcurementOrm.id == id).one_or_none()
+        self.session.delete(deleting_model)
+        self.session.commit()
+        return deleting_model

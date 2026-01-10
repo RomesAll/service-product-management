@@ -24,3 +24,8 @@ def create_records(request: Request, dto_model: ProcurementPOSTSchemas, session:
 def update_records(request: Request, dto_model: ProcurementPUTSchemas, session: session_dep):
     result = ProcurementService(session, request.client.host).update_records(dto_model)
     return {'message': result}
+
+@router.delete('/{id}')
+def delete_records(request: Request, id: uuid.UUID, session: session_dep):
+    result = ProcurementService(session, request.client.host).delete_records(id)
+    return {'message': result}

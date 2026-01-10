@@ -23,3 +23,8 @@ def create_records(request: Request, dto_model: ProductsPOSTSchemas, session: se
 def update_records(request: Request, dto_model: ProductsPUTSchemas, session: session_dep):
     result = ProductsService(session, request.client.host).update_records(dto_model)
     return {'message': result}
+
+@router.delete('/{id}')
+def delete_records(request: Request, id: int, session: session_dep):
+    result = ProductsService(session, request.client.host).delete_records(id)
+    return {'message': result}

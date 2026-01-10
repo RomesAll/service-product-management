@@ -30,6 +30,10 @@ class ProductsService:
         result = ProductsRepository(self.session, self.client).update_records(orm_model)
         return ProductsGETSchemas.model_validate(result, from_attributes=True)
 
+    def delete_records(self, id: int):
+        result = ProductsRepository(self.session, self.client).delete_records(id)
+        return ProductsGETSchemas.model_validate(result, from_attributes=True)
+
 class TypeProductService:
 
     def __init__(self, session, client):
@@ -56,6 +60,10 @@ class TypeProductService:
         result = TypeProductRepository(self.session, self.client).update_records(orm_model)
         return TypeProductGETSchemas.model_validate(result, from_attributes=True)
 
+    def delete_records(self, id: int):
+        result = TypeProductRepository(self.session, self.client).delete_records(id)
+        return TypeProductGETSchemas.model_validate(result, from_attributes=True)
+
 class ProcurementService:
 
     def __init__(self, session, client):
@@ -80,4 +88,8 @@ class ProcurementService:
     def update_records(self, dto_model: ProcurementPUTSchemas):
         orm_model = ProcurementOrm(**dto_model.model_dump(exclude_none=True, exclude_defaults=True))
         result = ProcurementRepository(self.session, self.client).update_records(orm_model)
+        return ProcurementGETSchemas.model_validate(result, from_attributes=True)
+
+    def delete_records(self, id: uuid.UUID):
+        result = ProcurementRepository(self.session, self.client).delete_records(id)
         return ProcurementGETSchemas.model_validate(result, from_attributes=True)
