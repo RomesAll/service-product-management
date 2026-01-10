@@ -17,6 +17,12 @@ class ProductsRepository:
         query = self.session.query(ProductsOrm).filter(ProductsOrm.id == int(id)).one_or_none()
         return query
 
+    def create_records(self, orm_model: ProductsOrm):
+        self.session.add(orm_model)
+        self.session.flush()
+        self.session.commit()
+        return orm_model.id
+
 class TypeProductRepository:
 
     def __init__(self, session, client):
@@ -31,6 +37,12 @@ class TypeProductRepository:
         query = self.session.query(TypeProductOrm).filter(TypeProductOrm.id == int(id)).one_or_none()
         return query
 
+    def create_records(self, orm_model: TypeProductOrm):
+        self.session.add(orm_model)
+        self.session.flush()
+        self.session.commit()
+        return orm_model.id
+
 class ProcurementRepository:
 
     def __init__(self, session, client):
@@ -44,3 +56,9 @@ class ProcurementRepository:
     def get_records_by_id(self, id: uuid.UUID):
         query = self.session.query(ProcurementOrm).filter(ProcurementOrm.id == id).one_or_none()
         return query
+
+    def create_records(self, orm_model: ProcurementOrm):
+        self.session.add(orm_model)
+        self.session.flush()
+        self.session.commit()
+        return orm_model.id
