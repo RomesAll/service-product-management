@@ -1,23 +1,21 @@
 from sqlalchemy.orm import Session
 from app.models.products import ProductsOrm, TypeProductOrm, ProcurementOrm
-from app.schemas.base import PaginationParams
-from sqlalchemy import select
-from app.db.database import session_maker
+from app.schemas import PaginationParams
+import uuid
 
 class ProductsRepository:
 
     def __init__(self, session, client):
-        self.session: str = session
+        self.session: Session = session
         self.client: str = client
 
     def get_all_records(self, pagination: PaginationParams):
         query = self.session.query(ProductsOrm).limit(pagination.limit).offset(pagination.offset).all()
         return query
 
-    def get_records_by_id(self, id):
-        query = self.session.query(ProductsOrm).filter(ProductsOrm.id == id).one_or_none()
+    def get_records_by_id(self, id: int):
+        query = self.session.query(ProductsOrm).filter(ProductsOrm.id == int(id)).one_or_none()
         return query
-
 
 class TypeProductRepository:
 
@@ -29,8 +27,8 @@ class TypeProductRepository:
         query = self.session.query(TypeProductOrm).limit(pagination.limit).offset(pagination.offset).all()
         return query
 
-    def get_records_by_id(self, id):
-        query = self.session.query(TypeProductOrm).filter(TypeProductOrm.id == id).one_or_none()
+    def get_records_by_id(self, id: int):
+        query = self.session.query(TypeProductOrm).filter(TypeProductOrm.id == int(id)).one_or_none()
         return query
 
 class ProcurementRepository:
@@ -43,6 +41,6 @@ class ProcurementRepository:
         query = self.session.query(ProcurementOrm).limit(pagination.limit).offset(pagination.offset).all()
         return query
 
-    def get_records_by_id(self, id):
+    def get_records_by_id(self, id: uuid.UUID):
         query = self.session.query(ProcurementOrm).filter(ProcurementOrm.id == id).one_or_none()
         return query

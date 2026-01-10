@@ -1,2 +1,2 @@
-__all__ = ('get_session', )
-from .helpers import get_session
+__all__ = ('get_session', 'session_dep', 'pagination_dep')
+from .helpers import get_session, session_dep, pagination_dep

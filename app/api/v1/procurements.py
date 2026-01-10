@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request
 from app.service.products import ProcurementService
 from app.utils.helpers import session_dep, pagination_dep
+import uuid
 
 router = APIRouter(prefix="/procurements", tags=["Procurements"])
 
@@ -10,6 +11,6 @@ def get_all_records(request: Request, session: session_dep, pagination: paginati
     return {'message': result}
 
 @router.get('/{id}')
-def get_records_by_id(request: Request, id: int, session: session_dep):
+def get_records_by_id(request: Request, id: uuid.UUID, session: session_dep):
     result = ProcurementService(session, request.client.host).get_records_by_id(id)
     return {'message': result}
