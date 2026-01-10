@@ -9,8 +9,8 @@ class ProductsService:
         self.session: Session = session
         self.client: str = client
 
-    def get_all_records(self, pagination_params: PaginationParams):
-        orm_models = ProductsRepository(self.session, self.client).get_all_records(pagination_params)
+    def get_all_records(self, pagination: PaginationParams):
+        orm_models = ProductsRepository(self.session, self.client).get_all_records(pagination)
         dto_models = [ProductsGETSchemas.model_validate(row, from_attributes=True) for row in orm_models]
         return dto_models
 
@@ -25,8 +25,8 @@ class TypeProductService:
         self.session: Session = session
         self.client: str = client
 
-    def get_all_records(self, pagination_params: PaginationParams):
-        orm_models = TypeProductRepository(self.session, self.client).get_all_records(pagination_params)
+    def get_all_records(self, pagination: PaginationParams):
+        orm_models = TypeProductRepository(self.session, self.client).get_all_records(pagination)
         dto_models = [TypeProductGETSchemas.model_validate(row, from_attributes=True) for row in orm_models]
         return dto_models
 
@@ -41,8 +41,8 @@ class ProcurementService:
         self.session: Session = session
         self.client: str = client
 
-    def get_all_records(self, pagination_params: PaginationParams):
-        orm_models = ProcurementRepository(self.session, self.client).get_all_records(pagination_params)
+    def get_all_records(self, pagination: PaginationParams):
+        orm_models = ProcurementRepository(self.session, self.client).get_all_records(pagination)
         dto_models = [ProcurementGETSchemas.model_validate(row, from_attributes=True) for row in orm_models]
         return dto_models
 

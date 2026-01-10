@@ -30,6 +30,6 @@ class LoggingSettings:
 
 logging_setup = LoggingSettings(logger_name="app", level="DEBUG")
 logging_setup.create_handler_console(level=logging.DEBUG)
-# logging_setup.create_handler_file(filename='info.log', filemode='a', level=logging.INFO)
-# logging_setup.create_handler_file(filename='warning.log', filemode='a', level=logging.WARNING)
-# logging_setup.create_handler_file(filename='error.log', filemode='a', level=logging.ERROR)
+logging_setup.create_handler_file(filename='info.log', filemode='a', level=logging.INFO)
+logging_setup.create_handler_file(filename='warning.log', filemode='a', level=logging.WARNING)
+logging_setup.create_handler_file(filename='error.log', filemode='a', level=logging.ERROR)

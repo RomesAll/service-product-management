@@ -1,20 +1,23 @@
 from sqlalchemy.orm import Session
 from app.models.products import ProductsOrm, TypeProductOrm, ProcurementOrm
 from app.schemas.base import PaginationParams
+from sqlalchemy import select
+from app.db.database import session_maker
 
 class ProductsRepository:
 
     def __init__(self, session, client):
-        self.session: Session = session
+        self.session: str = session
         self.client: str = client
 
-    def get_all_records(self, pagination_params: PaginationParams):
-        query = self.session.query(ProductsOrm).limit(pagination_params.limit).offset(pagination_params.offset).all()
+    def get_all_records(self, pagination: PaginationParams):
+        query = self.session.query(ProductsOrm).limit(pagination.limit).offset(pagination.offset).all()
         return query
 
     def get_records_by_id(self, id):
         query = self.session.query(ProductsOrm).filter(ProductsOrm.id == id).one_or_none()
         return query
+
 
 class TypeProductRepository:
 
@@ -22,8 +25,8 @@ class TypeProductRepository:
         self.session: Session = session
         self.client: str = client
 
-    def get_all_records(self, pagination_params: PaginationParams):
-        query = self.session.query(TypeProductOrm).limit(pagination_params.limit).offset(pagination_params.offset).all()
+    def get_all_records(self, pagination: PaginationParams):
+        query = self.session.query(TypeProductOrm).limit(pagination.limit).offset(pagination.offset).all()
         return query
 
     def get_records_by_id(self, id):
@@ -36,8 +39,8 @@ class ProcurementRepository:
         self.session: Session = session
         self.client: str = client
 
-    def get_all_records(self, pagination_params: PaginationParams):
-        query = self.session.query(ProcurementOrm).limit(pagination_params.limit).offset(pagination_params.offset).all()
+    def get_all_records(self, pagination: PaginationParams):
+        query = self.session.query(ProcurementOrm).limit(pagination.limit).offset(pagination.offset).all()
         return query
 
     def get_records_by_id(self, id):
