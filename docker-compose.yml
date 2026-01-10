@@ -19,7 +19,7 @@ services:
       retries: 3
     links:
       - "postgres:db_host"
-      - "postgres_test:db_host"
+      - "postgres_test:db_host_test"
       - "rabbitmq_products:rmq_host"
       - "redis_products:redis_host"
     networks:

@@ -1,5 +1,5 @@
-from ..db.database import session_maker
-from ..core import settings
+from app.db.database import session_maker
+from app.core import settings
 
 def get_session():
     try:

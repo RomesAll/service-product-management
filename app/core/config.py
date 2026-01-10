@@ -2,9 +2,16 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import SecretStr
 from redis import Redis
 from .logging_config import *
+from pathlib import Path
+import sys
+
+BASE_DIR = Path(__file__).parent.parent.parent
+APP_DIR = BASE_DIR / 'app'
+sys.path.append(str(BASE_DIR))
+sys.path.append(str(APP_DIR))
 
 class Base(BaseSettings):
-    model_config = SettingsConfigDict(env_file='../.env', extra='ignore')
+    model_config = SettingsConfigDict(env_file=f'{BASE_DIR}/.env', extra='ignore')
 
 class RedisSettings(Base):
     REDIS_HOST: str

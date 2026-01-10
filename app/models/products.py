@@ -11,7 +11,7 @@ class ProcurementOrm(Base):
     count_products: Mapped[int]
     product: Mapped["ProductsOrm"] = relationship(back_populates='procurements')
 
-class TypeProduct(Base):
+class TypeProductOrm(Base):
     __tablename__ = "type_products"
     id: Mapped[int] = mapped_column(primary_key=True, nullable=False, autoincrement=True)
     type_product: Mapped[str] = mapped_column(nullable=False, unique=True)
@@ -25,4 +25,4 @@ class ProductsOrm(Base):
     exist: Mapped[bool] = mapped_column(default=False)
     provider: Mapped[str]
     procurements: Mapped[list["ProcurementOrm"]] = relationship(back_populates='product')
-    type_product: Mapped["TypeProduct"] = relationship(back_populates='products')
+    type_product: Mapped["TypeProductOrm"] = relationship(back_populates='products')
