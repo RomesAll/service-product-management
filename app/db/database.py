@@ -15,4 +15,4 @@ class Base(DeclarativeBase):
     metadata = MetaData()
 
     created_at: Mapped[datetime] = mapped_column(server_default=text("TIMEZONE('utc', now())"))
-    updated_at: Mapped[datetime] = mapped_column(server_default=text("TIMEZONE('utc', now())"), onupdate=get_current_time)
+    updated_at: Mapped[datetime] = mapped_column(server_default=text("TIMEZONE('utc', now())"), onupdate=text("TIMEZONE('utc', now())"))

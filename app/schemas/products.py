@@ -1,12 +1,12 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
 from uuid import UUID
 
 class ProductsPOSTSchemas(BaseModel):
-    product: str
-    type_product_id: int
-    exist: bool
-    provider: str
+    product: str = Field(default=None)
+    type_product_id: int = Field(default=None)
+    exist: bool = Field(default=None)
+    provider: str = Field(default=None)
     model_config = ConfigDict(from_attributes=True)
 
 class ProductsGETSchemas(ProductsPOSTSchemas):
@@ -22,7 +22,7 @@ class ProductsRelSchemas(ProductsPOSTSchemas):
     type_product: "TypeProductPOSTSchemas"
 
 class TypeProductPOSTSchemas(BaseModel):
-    type_product: str
+    type_product: str = Field(default=None)
     model_config = ConfigDict(from_attributes=True)
 
 class TypeProductGETSchemas(TypeProductPOSTSchemas):
@@ -37,9 +37,9 @@ class TypeProductRelSchemas(TypeProductPOSTSchemas):
     products: list["ProductsPOSTSchemas"]
 
 class ProcurementPOSTSchemas(BaseModel):
-    product_id: int
-    price: float
-    count_products: int
+    product_id: int = Field(default=None)
+    price: float = Field(default=None)
+    count_products: int = Field(default=None)
     model_config = ConfigDict(from_attributes=True)
 
 class ProcurementGETSchemas(ProcurementPOSTSchemas):

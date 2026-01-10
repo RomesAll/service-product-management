@@ -23,6 +23,15 @@ class ProductsRepository:
         self.session.commit()
         return orm_model
 
+    def update_records(self, orm_model: ProductsOrm):
+        updating_model = self.session.query(ProductsOrm).filter(ProductsOrm.id == int(orm_model.id)).one_or_none()
+        for key in orm_model.__table__.columns.keys():
+            value = orm_model.__dict__.get(key, None)
+            if value:
+                setattr(updating_model, key, value)
+        self.session.commit()
+        return updating_model
+
 class TypeProductRepository:
 
     def __init__(self, session, client):
@@ -43,6 +52,15 @@ class TypeProductRepository:
         self.session.commit()
         return orm_model
 
+    def update_records(self, orm_model: TypeProductOrm):
+        updating_model = self.session.query(TypeProductOrm).filter(TypeProductOrm.id == int(orm_model.id)).one_or_none()
+        for key in orm_model.__table__.columns.keys():
+            value = orm_model.__dict__.get(key, None)
+            if value:
+                setattr(updating_model, key, value)
+        self.session.commit()
+        return updating_model
+
 class ProcurementRepository:
 
     def __init__(self, session, client):
@@ -62,3 +80,12 @@ class ProcurementRepository:
         self.session.flush()
         self.session.commit()
         return orm_model
+
+    def update_records(self, orm_model: ProcurementOrm):
+        updating_model = self.session.query(ProcurementOrm).filter(ProcurementOrm.id == orm_model.id).one_or_none()
+        for key in orm_model.__table__.columns.keys():
+            value = orm_model.__dict__.get(key, None)
+            if value:
+                setattr(updating_model, key, value)
+        self.session.commit()
+        return updating_model

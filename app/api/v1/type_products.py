@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request
-from app.service.products import TypeProductService, TypeProductPOSTSchemas
+from app.service.products import TypeProductService, TypeProductPOSTSchemas, TypeProductPUTSchemas
 from app.utils.helpers import session_dep, pagination_dep
 
 router = APIRouter(prefix="/type-products", tags=["Type products"])
@@ -17,4 +17,9 @@ def get_records_by_id(request: Request, id: int, session: session_dep):
 @router.post('/')
 def create_records(request: Request, dto_model: TypeProductPOSTSchemas, session: session_dep):
     result = TypeProductService(session, request.client.host).create_records(dto_model)
+    return {'message': result}
+
+@router.put('/')
+def update_records(request: Request, dto_model: TypeProductPUTSchemas, session: session_dep):
+    result = TypeProductService(session, request.client.host).update_records(dto_model)
     return {'message': result}
