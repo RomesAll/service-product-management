@@ -8,5 +8,6 @@ RUN mkdir "app" "test"
 COPY /app ./app
 COPY /test ./test
 COPY /alembic.ini .
+COPY /pytest.ini .
 EXPOSE 8000
 CMD ["python", "app/main.py"]
