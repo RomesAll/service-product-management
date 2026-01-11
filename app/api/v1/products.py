@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
 from app.service import ProductsService
 from app.schemas import *
-from app.dependencies import session_dep, pagination_dep
+from app.dependencies import session_dep, pagination_dep, validate_active_user
 
-router = APIRouter(prefix="/products", tags=["Products"])
+router = APIRouter(prefix="/products", tags=["Products"], dependencies=[Depends(validate_active_user)])
 
 @router.get('/')
 def get_all_records(request: Request, session: session_dep, pagination: pagination_dep):
