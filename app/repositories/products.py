@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app.models.products import ProductsOrm, TypeProductOrm, ProcurementOrm
 from app.schemas import PaginationParams
+from app.core import settings
 import uuid
 
 class ProductsRepository:
@@ -12,18 +13,21 @@ class ProductsRepository:
 
     def get_all_records(self, pagination: PaginationParams):
         query = self.session.query(ProductsOrm).limit(pagination.limit).offset(pagination.offset).all()
+        settings.logger.debug("client: %s received the data: %s", self.client, query)
         return query
 
     def get_records_by_id(self, id: int):
         query = self.session.query(ProductsOrm).filter(ProductsOrm.id == int(id)).one_or_none()
         if query is None:
             raise HTTPException(status_code=404, detail="Product not found")
+        settings.logger.debug("client: %s received the data: %s", self.client, query)
         return query
 
     def create_records(self, orm_model: ProductsOrm):
         self.session.add(orm_model)
         self.session.flush()
         self.session.commit()
+        settings.logger.debug("client: %s added the data: %s", self.client, orm_model)
         return orm_model
 
     def update_records(self, orm_model: ProductsOrm):
@@ -35,6 +39,7 @@ class ProductsRepository:
             if value:
                 setattr(updating_model, key, value)
         self.session.commit()
+        settings.logger.debug("client: %s refresh the data: %s", self.client, updating_model)
         return updating_model
 
     def delete_records(self, id: int):
@@ -43,6 +48,7 @@ class ProductsRepository:
             raise HTTPException(status_code=404, detail="Product not found")
         self.session.delete(deleting_model)
         self.session.commit()
+        settings.logger.debug("client: %s deleted the data: %s", self.client, deleting_model)
         return deleting_model
 
 class TypeProductRepository:
@@ -53,18 +59,21 @@ class TypeProductRepository:
 
     def get_all_records(self, pagination: PaginationParams):
         query = self.session.query(TypeProductOrm).limit(pagination.limit).offset(pagination.offset).all()
+        settings.logger.debug("client: %s received the data: %s", self.client, query)
         return query
 
     def get_records_by_id(self, id: int):
         query = self.session.query(TypeProductOrm).filter(TypeProductOrm.id == int(id)).one_or_none()
         if query is None:
             raise HTTPException(status_code=404, detail="Type product not found")
+        settings.logger.debug("client: %s received the data: %s", self.client, query)
         return query
 
     def create_records(self, orm_model: TypeProductOrm):
         self.session.add(orm_model)
         self.session.flush()
         self.session.commit()
+        settings.logger.debug("client: %s added the data: %s", self.client, orm_model)
         return orm_model
 
     def update_records(self, orm_model: TypeProductOrm):
@@ -76,6 +85,7 @@ class TypeProductRepository:
             if value:
                 setattr(updating_model, key, value)
         self.session.commit()
+        settings.logger.debug("client: %s updated the data: %s", self.client, updating_model)
         return updating_model
 
     def delete_records(self, id: int):
@@ -84,6 +94,7 @@ class TypeProductRepository:
             raise HTTPException(status_code=404, detail="Type product not found")
         self.session.delete(deleting_model)
         self.session.commit()
+        settings.logger.debug("client: %s deleted the data: %s", self.client, deleting_model)
         return deleting_model
 
 class ProcurementRepository:
@@ -94,18 +105,21 @@ class ProcurementRepository:
 
     def get_all_records(self, pagination: PaginationParams):
         query = self.session.query(ProcurementOrm).limit(pagination.limit).offset(pagination.offset).all()
+        settings.logger.debug("client: %s received the data: %s", self.client, query)
         return query
 
     def get_records_by_id(self, id: uuid.UUID):
         query = self.session.query(ProcurementOrm).filter(ProcurementOrm.id == id).one_or_none()
         if query is None:
             raise HTTPException(status_code=404, detail="Procurement not found")
+        settings.logger.debug("client: %s received the data: %s", self.client, query)
         return query
 
     def create_records(self, orm_model: ProcurementOrm):
         self.session.add(orm_model)
         self.session.flush()
         self.session.commit()
+        settings.logger.debug("client: %s added the data: %s", self.client, orm_model)
         return orm_model
 
     def update_records(self, orm_model: ProcurementOrm):
@@ -117,6 +131,7 @@ class ProcurementRepository:
             if value:
                 setattr(updating_model, key, value)
         self.session.commit()
+        settings.logger.debug("client: %s updated the data: %s", self.client, updating_model)
         return updating_model
 
     def delete_records(self, id: uuid.UUID):
@@ -125,4 +140,5 @@ class ProcurementRepository:
             raise HTTPException(status_code=404, detail="Procurement not found")
         self.session.delete(deleting_model)
         self.session.commit()
+        settings.logger.debug("client: %s deleted the data: %s", self.client, deleting_model)
         return deleting_model

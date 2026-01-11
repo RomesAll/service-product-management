@@ -2,16 +2,15 @@ from fastapi import Depends, Request, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 from typing import Annotated
+from app.repositories import UsersRepository
+from app.utils import decode_jwt, verify_password
 from app.schemas import CredentialUsers, UsersGETSchemas, PaginationParams
 from app.db import session_maker
-from app.utils import decode_jwt, verify_password
-from app.repositories import UsersRepository
 import jwt
 
 http_bearer = HTTPBearer()
 
 def get_session():
-
     try:
         session = session_maker()
         yield session
