@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from app.service import ProductsService
 from app.schemas import *
-from app.utils import session_dep, pagination_dep
+from app.dependencies import session_dep, pagination_dep
 
 router = APIRouter(prefix="/products", tags=["Products"])
 

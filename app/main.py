@@ -1,16 +1,18 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
 from core import settings
-from app.api.v1 import procurements_router, type_products_router, products_router, auth_router
+from app.api.v1 import procurements_router, type_products_router, products_router, auth_router, users_router
 from app.core.exception_handlers import exception_handler
 from datetime import datetime, timezone
+#from app.core import http_bearer
 import uvicorn, time
 
-app = FastAPI()
+app = FastAPI() #dependencies=[Depends(http_bearer)]
 exception_handler(app)
 app.include_router(products_router)
 app.include_router(type_products_router)
 app.include_router(procurements_router)
 app.include_router(auth_router)
+app.include_router(users_router)
 
 @app.middleware("http")
 async def process_request(request: Request, call_next):

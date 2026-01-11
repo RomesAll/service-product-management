@@ -1,5 +1,6 @@
 from app.schemas import PaginationParams
 from app.models import UsersOrm
+from app.utils import hash_password
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from uuid import UUID
@@ -20,7 +21,14 @@ class UsersRepository:
             raise HTTPException(status_code=404, detail="User not found")
         return query
 
+    def get_records_by_username(self, username: str):
+        query = self.session.query(UsersOrm).filter(UsersOrm.username == username).one_or_none()
+        if query is None:
+            raise HTTPException(status_code=404, detail="User not found")
+        return query
+
     def create_records(self, orm_model: UsersOrm):
+        orm_model.password = hash_password(orm_model.password.decode())
         self.session.add(orm_model)
         self.session.flush()
         self.session.commit()

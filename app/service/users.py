@@ -2,7 +2,7 @@ from app.repositories import UsersRepository
 from app.models import UsersOrm
 from app.schemas import *
 from sqlalchemy.orm import Session
-from uuid import UUID
+from uuid import UUID, uuid4
 
 class UsersService:
 
@@ -20,12 +20,12 @@ class UsersService:
         dto_model = UsersGETSchemas.model_validate(orm_model, from_attributes=True)
         return dto_model
 
-    def create_records(self, dto_model: ProductsPOSTSchemas) -> UsersGETSchemas:
-        orm_model = UsersOrm(**dto_model.model_dump())
+    def create_records(self, dto_model: UsersPOSTSchemas) -> UsersGETSchemas:
+        orm_model = UsersOrm(id=uuid4(),**dto_model.model_dump())
         result = UsersRepository(self.session, self.client).create_records(orm_model)
         return UsersGETSchemas.model_validate(result, from_attributes=True)
 
-    def update_records(self, dto_model: ProductsPUTSchemas) -> UsersGETSchemas:
+    def update_records(self, dto_model: UsersPUTSchemas) -> UsersGETSchemas:
         orm_model = UsersOrm(**dto_model.model_dump(exclude_none=True, exclude_defaults=True))
         result = UsersRepository(self.session, self.client).update_records(orm_model)
         return UsersGETSchemas.model_validate(result, from_attributes=True)
