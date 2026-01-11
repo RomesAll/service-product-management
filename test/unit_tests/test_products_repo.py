@@ -3,7 +3,6 @@ from app.schemas import PaginationParams
 from app.repositories import ProductsRepository, TypeProductRepository, ProcurementRepository
 from contextlib import nullcontext as does_not_raise
 from test.unit_tests.conftest import DEFAULT_UUID, DEFAULT_ID
-from fastapi import HTTPException
 import pytest, uuid
 
 class TestProductsRepository:
@@ -31,6 +30,15 @@ class TestProductsRepository:
             result = ProductsRepository(get_test_session, '127.0.0.1').get_records_by_id(id=id)
             assert result.id == id
 
+    @pytest.mark.parametrize("orm_object", [
+        (ProductsOrm(id=DEFAULT_ID[-1] + 1, product='test product 1', type_product_id=DEFAULT_ID[0], exist=False, provider='provider')),
+        (ProductsOrm(id=DEFAULT_ID[-1] + 2, product='test product 2', type_product_id=DEFAULT_ID[1], exist=True, provider='provider')),
+        (ProductsOrm(id=DEFAULT_ID[-1] + 3, product='test product 3', type_product_id=DEFAULT_ID[2], exist=False, provider='provider'))
+    ])
+    def test_create_records(self, get_test_session, orm_object):
+        result = ProductsRepository(get_test_session, '127.0.0.1').create_records(orm_object)
+        assert isinstance(result, ProductsOrm)
+
 class TestTypeProductRepository:
 
     @pytest.mark.parametrize("pagination, len_array, expectation", [
@@ -55,6 +63,15 @@ class TestTypeProductRepository:
             result = TypeProductRepository(get_test_session, '127.0.0.1').get_records_by_id(id=id)
             assert result.id == id
 
+    @pytest.mark.parametrize("orm_object", [
+        (TypeProductOrm(id=DEFAULT_ID[-1] + 1, type_product='test type 11')),
+        (TypeProductOrm(id=DEFAULT_ID[-1] + 2, type_product='test type 12')),
+        (TypeProductOrm(id=DEFAULT_ID[-1] + 3, type_product='test type 13'))
+    ])
+    def test_create_records(self, get_test_session, orm_object):
+        result = TypeProductRepository(get_test_session, '127.0.0.1').create_records(orm_object)
+        assert isinstance(result, TypeProductOrm)
+
 class TestProcurementRepository:
 
     @pytest.mark.parametrize("pagination, len_array, expectation", [
@@ -77,3 +94,12 @@ class TestProcurementRepository:
         with expectation:
             result = ProcurementRepository(get_test_session, '127.0.0.1').get_records_by_id(id=id)
             assert result.id == id
+
+    @pytest.mark.parametrize("orm_object", [
+        (ProcurementOrm(id=uuid.uuid4(), product_id=DEFAULT_ID[0], price=100, count_products=100)),
+        (ProcurementOrm(id=uuid.uuid4(), product_id=DEFAULT_ID[1], price=100, count_products=100)),
+        (ProcurementOrm(id=uuid.uuid4(), product_id=DEFAULT_ID[2], price=100, count_products=100)),
+    ])
+    def test_create_records(self, get_test_session, orm_object):
+        result = ProcurementRepository(get_test_session, '127.0.0.1').create_records(orm_object)
+        assert isinstance(result, ProcurementOrm)
