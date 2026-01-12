@@ -15,7 +15,7 @@ class ProductsService:
         orm_models = ProductsRepository(self.session, self.client).get_all_records(pagination)
         dto_models = [ProductsGETSchemas.model_validate(row, from_attributes=True) for row in orm_models]
         settings.logger.debug("client: %s converted the orm model in dto: %s", self.client, dto_models)
-        return dto_models
+        return list(dto_models)
 
     def get_records_by_id(self, id: int) -> ProductsGETSchemas:
         orm_model = ProductsRepository(self.session, self.client).get_records_by_id(id)

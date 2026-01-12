@@ -1,9 +1,7 @@
-from sqlalchemy.exc import IntegrityError
 from app.models import UsersOrm
 from app.schemas import PaginationParams
 from app.repositories import UsersRepository
 from contextlib import nullcontext as does_not_raise
-from test.unit_tests.conftest import DEFAULT_UUID
 import pytest, uuid
 
 class TestUsersRepository:
@@ -20,10 +18,10 @@ class TestUsersRepository:
             assert len(result) <= len_array
 
     @pytest.mark.parametrize("id, expectation", [
-        (DEFAULT_UUID[0], does_not_raise()),
-        (DEFAULT_UUID[1], does_not_raise()),
-        (DEFAULT_UUID[2], does_not_raise()),
-        (14, pytest.raises(Exception))
+        (uuid.UUID('12345678123456781234567812345671'), does_not_raise()),
+        (uuid.UUID('12345678123456781234567812345672'), does_not_raise()),
+        (uuid.UUID('12345678123456781234567812345673'), does_not_raise()),
+        (uuid.UUID('12345678123456781234567812345679'), pytest.raises(Exception))
     ])
     def test_get_records_by_id(self, get_test_session, id: uuid.UUID, expectation):
         with expectation:
@@ -39,14 +37,14 @@ class TestUsersRepository:
         assert isinstance(result, UsersOrm)
 
     @pytest.mark.parametrize("orm_object", [
-        UsersOrm(id=DEFAULT_UUID[0], username='update username', active=False),
+        UsersOrm(id=uuid.UUID('12345678123456781234567812345673'), username='update username', active=False),
     ])
     def test_update_records(self, get_test_session, orm_object):
         result = UsersRepository(get_test_session, '127.0.0.1').update_records(orm_object)
         assert isinstance(result, UsersOrm)
         assert result.active == False
 
-    @pytest.mark.parametrize("id", [DEFAULT_UUID[0], DEFAULT_UUID[1]])
+    @pytest.mark.parametrize("id", [uuid.UUID('12345678123456781234567812345673'), ])
     def test_delete_records(self, get_test_session, id):
         result = UsersRepository(get_test_session, '127.0.0.1').delete_records(id)
         assert isinstance(result, UsersOrm)
