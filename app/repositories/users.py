@@ -45,7 +45,7 @@ class UsersRepository:
             raise HTTPException(status_code=404, detail="User not found")
         for key in orm_model.__table__.columns.keys():
             value = orm_model.__dict__.get(key, None)
-            if value:
+            if value is not None:
                 setattr(updating_model, key, value)
         self.session.commit()
         settings.logger.debug("client: %s updated the data: %s", self.client, updating_model)

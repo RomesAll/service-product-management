@@ -37,7 +37,7 @@ class ProductsRepository:
             raise HTTPException(status_code=404, detail="Product not found")
         for key in orm_model.__table__.columns.keys():
             value = orm_model.__dict__.get(key, None)
-            if value:
+            if value is not None:
                 setattr(updating_model, key, value)
         self.session.commit()
         settings.logger.debug("client: %s refresh the data: %s", self.client, updating_model)
@@ -84,7 +84,7 @@ class TypeProductRepository:
             raise HTTPException(status_code=404, detail="Type product not found")
         for key in orm_model.__table__.columns.keys():
             value = orm_model.__dict__.get(key, None)
-            if value:
+            if value is not None:
                 setattr(updating_model, key, value)
         self.session.commit()
         settings.logger.debug("client: %s updated the data: %s", self.client, updating_model)
@@ -131,7 +131,7 @@ class ProcurementRepository:
             raise HTTPException(status_code=404, detail="Procurement not found")
         for key in orm_model.__table__.columns.keys():
             value = orm_model.__dict__.get(key, None)
-            if value:
+            if value is not None:
                 setattr(updating_model, key, value)
         self.session.commit()
         settings.logger.debug("client: %s updated the data: %s", self.client, updating_model)
