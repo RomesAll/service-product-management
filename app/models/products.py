@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 class ProcurementOrm(Base):
     __tablename__ = 'procurements'
     id = Column(UUID(as_uuid=True), primary_key=True, nullable=False, autoincrement=False)
-    product_id: Mapped[int] = mapped_column(ForeignKey('products.id', ondelete='SET NULL'))
+    product_id: Mapped[int] = mapped_column(ForeignKey('products.id', ondelete='CASCADE'))
     price: Mapped[float]
     count_products: Mapped[int]
     product: Mapped["ProductsOrm"] = relationship(back_populates='procurements')
@@ -21,7 +21,7 @@ class ProductsOrm(Base):
     __tablename__ = "products"
     id: Mapped[int] = mapped_column(primary_key=True, nullable=False, autoincrement=True)
     product: Mapped[str] = mapped_column(nullable=False, unique=True)
-    type_product_id: Mapped[int] = mapped_column(ForeignKey('type_products.id', ondelete='SET NULL'))
+    type_product_id: Mapped[int] = mapped_column(ForeignKey('type_products.id', ondelete='CASCADE'))
     exist: Mapped[bool] = mapped_column(default=False)
     provider: Mapped[str]
     procurements: Mapped[list["ProcurementOrm"]] = relationship(back_populates='product')

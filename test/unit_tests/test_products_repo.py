@@ -1,5 +1,4 @@
 from sqlalchemy.exc import IntegrityError
-
 from app.models import ProductsOrm, TypeProductOrm, ProcurementOrm
 from app.schemas import PaginationParams
 from app.repositories import ProductsRepository, TypeProductRepository, ProcurementRepository
@@ -51,6 +50,11 @@ class TestProductsRepository:
             result = ProductsRepository(get_test_session, '127.0.0.1').update_records(orm_object)
             assert isinstance(result, ProductsOrm)
 
+    @pytest.mark.parametrize("id", [DEFAULT_ID[3], DEFAULT_ID[4]])
+    def test_delete_records(self, get_test_session, id):
+        result = ProductsRepository(get_test_session, '127.0.0.1').delete_records(id)
+        assert isinstance(result, ProductsOrm)
+
 class TestTypeProductRepository:
 
     @pytest.mark.parametrize("pagination, len_array, expectation", [
@@ -94,6 +98,11 @@ class TestTypeProductRepository:
             result = TypeProductRepository(get_test_session, '127.0.0.1').update_records(orm_object)
             assert isinstance(result, TypeProductOrm)
 
+    @pytest.mark.parametrize("id", [DEFAULT_ID[3], DEFAULT_ID[4]])
+    def test_delete_records(self, get_test_session, id):
+        result = TypeProductRepository(get_test_session, '127.0.0.1').delete_records(id)
+        assert isinstance(result, TypeProductOrm)
+
 class TestProcurementRepository:
 
     @pytest.mark.parametrize("pagination, len_array, expectation", [
@@ -134,3 +143,8 @@ class TestProcurementRepository:
         with expectation:
             result = ProcurementRepository(get_test_session, '127.0.0.1').update_records(orm_object)
             assert isinstance(result, ProcurementOrm)
+
+    @pytest.mark.parametrize("id", [DEFAULT_UUID[3], DEFAULT_UUID[4]])
+    def test_delete_records(self, get_test_session, id):
+        result = ProcurementRepository(get_test_session, '127.0.0.1').delete_records(id)
+        assert isinstance(result, ProcurementOrm)

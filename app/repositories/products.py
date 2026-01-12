@@ -1,4 +1,5 @@
 from fastapi import HTTPException
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 from app.models.products import ProductsOrm, TypeProductOrm, ProcurementOrm
 from app.schemas import PaginationParams
@@ -43,10 +44,11 @@ class ProductsRepository:
         return updating_model
 
     def delete_records(self, id: int):
-        deleting_model = self.session.query(ProductsOrm).filter(ProductsOrm.id == int(id)).one_or_none()
+        deleting_model = self.session.get(ProductsOrm, {'id': int(id)})
         if deleting_model is None:
             raise HTTPException(status_code=404, detail="Product not found")
-        self.session.delete(deleting_model)
+        # self.session.delete(deleting_model)
+        self.session.execute(text("DELETE FROM products WHERE id = :id"), {'id': int(id)})
         self.session.commit()
         settings.logger.debug("client: %s deleted the data: %s", self.client, deleting_model)
         return deleting_model
@@ -92,7 +94,8 @@ class TypeProductRepository:
         deleting_model = self.session.query(TypeProductOrm).filter(TypeProductOrm.id == int(id)).one_or_none()
         if deleting_model is None:
             raise HTTPException(status_code=404, detail="Type product not found")
-        self.session.delete(deleting_model)
+        #self.session.delete(deleting_model)
+        self.session.execute(text("DELETE FROM type_products WHERE id = :id"), {'id': int(id)})
         self.session.commit()
         settings.logger.debug("client: %s deleted the data: %s", self.client, deleting_model)
         return deleting_model
@@ -138,7 +141,8 @@ class ProcurementRepository:
         deleting_model = self.session.query(ProcurementOrm).filter(ProcurementOrm.id == id).one_or_none()
         if deleting_model is None:
             raise HTTPException(status_code=404, detail="Procurement not found")
-        self.session.delete(deleting_model)
+        #self.session.delete(deleting_model)
+        self.session.execute(text("DELETE FROM procurements WHERE id = :id"), {'id': id})
         self.session.commit()
         settings.logger.debug("client: %s deleted the data: %s", self.client, deleting_model)
         return deleting_model
