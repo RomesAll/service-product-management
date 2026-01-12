@@ -5,6 +5,7 @@ from app.repositories import ProductsRepository, TypeProductRepository, Procurem
 from contextlib import nullcontext as does_not_raise
 import pytest, uuid
 
+@pytest.mark.usefixtures('create_default_records')
 class TestProductsRepository:
 
     @pytest.mark.parametrize("pagination, len_array, expectation", [
@@ -50,6 +51,7 @@ class TestProductsRepository:
         result = ProductsRepository(get_test_session, '127.0.0.1').delete_records(resalt_test_product.id)
         assert isinstance(result, ProductsOrm)
 
+@pytest.mark.usefixtures('create_default_records')
 class TestTypeProductRepository:
 
     @pytest.mark.parametrize("pagination, len_array, expectation", [
@@ -95,6 +97,7 @@ class TestTypeProductRepository:
         result = TypeProductRepository(get_test_session, '127.0.0.1').delete_records(resalt_test_product.id)
         assert isinstance(result, TypeProductOrm)
 
+@pytest.mark.usefixtures('create_default_records')
 class TestProcurementRepository:
 
     @pytest.mark.parametrize("pagination, len_array, expectation", [

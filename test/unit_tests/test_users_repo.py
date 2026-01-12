@@ -4,6 +4,7 @@ from app.repositories import UsersRepository
 from contextlib import nullcontext as does_not_raise
 import pytest, uuid
 
+@pytest.mark.usefixtures("create_default_users")
 class TestUsersRepository:
 
     @pytest.mark.parametrize("pagination, len_array, expectation", [
