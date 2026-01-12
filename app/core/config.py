@@ -1,9 +1,8 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import SecretStr
 from redis import Redis
-from .logging_config import *
 from pathlib import Path
-import sys
+import sys, logging
 
 BASE_DIR = Path(__file__).parent.parent.parent
 APP_DIR = BASE_DIR / 'app'
@@ -32,6 +31,7 @@ class PostgresSettings(Base):
     POSTGRES_PASSWORD: SecretStr
     POSTGRES_DB: str
     POSTGRES_PORT: int
+    POSTGRES_MODE: str
 
     @property
     def get_database_url_sync(self):
@@ -61,6 +61,6 @@ class Settings(BaseSettings):
     rabbitmq: RabbitMQSettings = RabbitMQSettings()
     redis: RedisSettings = RedisSettings()
     auth: AuthTokenSettings = AuthTokenSettings()
-    logger: logging.Logger = logging_setup.get_logger()
+    logger: logging.Logger = logging.getLogger('app')
 
 settings = Settings()

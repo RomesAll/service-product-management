@@ -4,13 +4,10 @@ services:
     image: service_product_management
     container_name: service_product_management
     hostname: product_management
-    env_file:
-      - .env
     ports:
       - "8000:8000"
     volumes:
-      - "./app:/services/app"
-      - "./test:/services/test"
+      - ".:/services"
     restart: "on-failure"
     healthcheck:
       test: curl -f http://0.0.0.0:8000/health-check || exit 1
