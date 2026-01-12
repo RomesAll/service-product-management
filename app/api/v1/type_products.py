@@ -3,7 +3,7 @@ from app.service import TypeProductService
 from app.schemas import *
 from app.dependencies import session_dep, pagination_dep, validate_active_user
 
-router = APIRouter(prefix="api/v1/type-products", tags=["Type products"], dependencies=[Depends(validate_active_user)])
+router = APIRouter(prefix="/api/v1/type-products", tags=["Type products"], dependencies=[Depends(validate_active_user)])
 
 @router.get('/')
 def get_all_records(request: Request, session: session_dep, pagination: pagination_dep):

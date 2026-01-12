@@ -4,7 +4,7 @@ from app.core.jwt_token import create_refresh_token, create_access_token
 from app.schemas import UsersGETSchemas
 from app.service import UsersService
 
-router = APIRouter(prefix="api/v1/auth", tags=["Authentication"])
+router = APIRouter(prefix="/api/v1/auth", tags=["Authentication"])
 
 @router.post("/login")
 def login(response: Response, user: validate_user_info_dep):
