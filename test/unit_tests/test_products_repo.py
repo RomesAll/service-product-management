@@ -1,3 +1,5 @@
+from sqlalchemy.exc import IntegrityError
+
 from app.models import ProductsOrm, TypeProductOrm, ProcurementOrm
 from app.schemas import PaginationParams
 from app.repositories import ProductsRepository, TypeProductRepository, ProcurementRepository
@@ -39,6 +41,16 @@ class TestProductsRepository:
         result = ProductsRepository(get_test_session, '127.0.0.1').create_records(orm_object)
         assert isinstance(result, ProductsOrm)
 
+    @pytest.mark.parametrize("orm_object, expectation", [
+        (ProductsOrm(id=DEFAULT_ID[0], product='update product 1'), does_not_raise()),
+        (ProductsOrm(id=DEFAULT_ID[1], product='update product 2'), does_not_raise()),
+        (ProductsOrm(id=DEFAULT_ID[2], product='update product 2'), pytest.raises(IntegrityError)),
+    ])
+    def test_update_records(self, get_test_session, orm_object, expectation):
+        with expectation:
+            result = ProductsRepository(get_test_session, '127.0.0.1').update_records(orm_object)
+            assert isinstance(result, ProductsOrm)
+
 class TestTypeProductRepository:
 
     @pytest.mark.parametrize("pagination, len_array, expectation", [
@@ -72,6 +84,16 @@ class TestTypeProductRepository:
         result = TypeProductRepository(get_test_session, '127.0.0.1').create_records(orm_object)
         assert isinstance(result, TypeProductOrm)
 
+    @pytest.mark.parametrize("orm_object, expectation", [
+        (TypeProductOrm(id=DEFAULT_ID[0], type_product='update type 1'), does_not_raise()),
+        (TypeProductOrm(id=DEFAULT_ID[1], type_product='update type 2'), does_not_raise()),
+        (TypeProductOrm(id=DEFAULT_ID[2], type_product='update type 2'), pytest.raises(IntegrityError)),
+    ])
+    def test_update_records(self, get_test_session, orm_object, expectation):
+        with expectation:
+            result = TypeProductRepository(get_test_session, '127.0.0.1').update_records(orm_object)
+            assert isinstance(result, TypeProductOrm)
+
 class TestProcurementRepository:
 
     @pytest.mark.parametrize("pagination, len_array, expectation", [
@@ -103,3 +125,12 @@ class TestProcurementRepository:
     def test_create_records(self, get_test_session, orm_object):
         result = ProcurementRepository(get_test_session, '127.0.0.1').create_records(orm_object)
         assert isinstance(result, ProcurementOrm)
+
+    @pytest.mark.parametrize("orm_object, expectation", [
+        (ProcurementOrm(id=DEFAULT_UUID[0], price=434), does_not_raise()),
+        (ProcurementOrm(id=DEFAULT_UUID[1], price=123), does_not_raise()),
+    ])
+    def test_update_records(self, get_test_session, orm_object, expectation):
+        with expectation:
+            result = ProcurementRepository(get_test_session, '127.0.0.1').update_records(orm_object)
+            assert isinstance(result, ProcurementOrm)
