@@ -5,3 +5,4 @@
 /.env
 /app/db/migrations/versions/*.py
 /app/certs/
+/app/logs/
