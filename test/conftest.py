@@ -63,3 +63,10 @@ def create_default_users():
     with session_maker() as test_session:
         test_session.add_all(default_object.get('users'))
         test_session.commit()
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--run-slow",
+        default="true",
+        choices=("true", "false")
+    )

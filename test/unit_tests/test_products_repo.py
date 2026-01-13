@@ -8,6 +8,7 @@ import pytest, uuid
 @pytest.mark.usefixtures('create_default_products')
 class TestProductsRepository:
 
+    @pytest.mark.skipif('config.getoption("--run-slow") == "false"')
     @pytest.mark.parametrize("limit, offset, len_array, expectation", [(1, 0, 1, does_not_raise()),
                                                                        (2, 0, 2, does_not_raise()),
                                                                        (5, 0, 3, pytest.raises(Exception))])
@@ -53,6 +54,7 @@ class TestProductsRepository:
 @pytest.mark.usefixtures('create_default_products')
 class TestTypeProductRepository:
 
+    @pytest.mark.skipif('config.getoption("--run-slow") == "false"')
     @pytest.mark.parametrize("limit, offset, len_array, expectation", [(1, 0, 1, does_not_raise()),
                                                                        (2, 0, 2, does_not_raise()),
                                                                        (5, 0, 3, pytest.raises(Exception))])
@@ -98,6 +100,7 @@ class TestTypeProductRepository:
 @pytest.mark.usefixtures('create_default_products')
 class TestProcurementRepository:
 
+    @pytest.mark.skipif('config.getoption("--run-slow") == "false"')
     @pytest.mark.parametrize("limit, offset, len_array, expectation", [(1, 0, 1, does_not_raise()),
                                                                     (2, 0, 2, does_not_raise()),
                                                                     (5, 0, 3, pytest.raises(Exception))])

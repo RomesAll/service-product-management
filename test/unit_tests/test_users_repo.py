@@ -7,6 +7,7 @@ import pytest, uuid
 @pytest.mark.usefixtures("create_default_users")
 class TestUsersRepository:
 
+    @pytest.mark.skipif('config.getoption("--run-slow") == "false"')
     @pytest.mark.parametrize("limit, offset, len_array, expectation", [(1, 0, 1, does_not_raise()),])
     def test_get_all_records(self, session, limit, offset, len_array, expectation):
         with expectation:
