@@ -24,6 +24,7 @@ class LoggingSettings:
         handler = logging.StreamHandler()
         handler.setLevel(level)
         handler.setFormatter(self.create_formatter(formatter))
+        handler.addFilter(LevelFilter(level))
         self.logger.addHandler(handler)
 
     def create_handler_file(self, filename: str, filemode: str, level: str | int, formatter: str = '%(asctime)s - %(name)s - %(module)s - %(levelname)s - %(message)s'):

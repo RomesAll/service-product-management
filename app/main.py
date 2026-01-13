@@ -38,7 +38,6 @@ async def process_request(request: Request, call_next):
 
 @app.get("/health-check")
 def health_check():
-    settings.logger.info("Health check")
     return {"status": "ok"}
 
 if __name__ == "__main__":

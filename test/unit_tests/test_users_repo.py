@@ -30,7 +30,7 @@ class TestUsersRepository:
         assert isinstance(result, UsersOrm)
 
     @pytest.mark.parametrize("id, username", [
-        (uuid.UUID('12345678123456781234567812345671'), 'roman abc'),])
+        (uuid.UUID('12345678123456781234567812345671'), 'roman'),])
     def test_update_records(self, session, id, username):
         orm_object = UsersOrm(id=id, username=username)
         result = UsersRepository(session, '127.0.0.1').update_records(orm_object)
