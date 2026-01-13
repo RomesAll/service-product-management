@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, MetaData, text
 from sqlalchemy.orm import sessionmaker, DeclarativeBase, Mapped, mapped_column
 from datetime import datetime, timezone
+from redis import Redis
 from app.core import settings
 
 engine = create_engine(url=settings.postgres.get_database_url_sync, echo=True)

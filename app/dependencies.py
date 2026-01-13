@@ -6,6 +6,8 @@ from app.repositories import UsersRepository
 from app.utils import decode_jwt, verify_password
 from app.schemas import CredentialUsers, UsersGETSchemas, PaginationParams
 from app.db import session_maker
+from redis import Redis
+from app.core import settings
 import jwt
 
 http_bearer = HTTPBearer()
@@ -16,6 +18,13 @@ def get_session():
         yield session
     finally:
         session.close()
+
+def get_redis_session():
+    try:
+        connection = Redis.from_url(settings.redis.get_redis_url)
+        yield connection
+    finally:
+        connection.close()
 
 def validate_access_token(token: HTTPAuthorizationCredentials = Depends(http_bearer)):
     if token is None or not token.credentials:

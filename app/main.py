@@ -1,10 +1,12 @@
-from fastapi import FastAPI, Request, Depends, Response, status
+from fastapi import FastAPI, Request, Response
 from core import settings
 from app.api.v1 import procurements_router, type_products_router, products_router, auth_router, users_router
 from app.core.exception_handlers import exception_handler
 from datetime import datetime, timezone
 from app.core.logging_config import *
-import uvicorn, time, logging
+from app.schemas import UsersPOSTSchemas
+from app.decorators import redis_cache
+import uvicorn, time
 
 app = FastAPI()
 exception_handler(app)
@@ -36,7 +38,7 @@ async def process_request(request: Request, call_next):
     logging_request(request, response, end_time)
     return response
 
-@app.get("/health-check")
+@app.post("/health-check")
 def health_check():
     return {"status": "ok"}
 

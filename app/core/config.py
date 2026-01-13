@@ -22,8 +22,7 @@ class RedisSettings(Base):
 
     @property
     def get_redis_url(self):
-        return Redis.from_url(f'redis://{self.REDIS_USER}:{self.REDIS_PASSWORD.get_secret_value()}@'
-                              f'{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}')
+        return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}"
 
 class PostgresSettings(Base):
     POSTGRES_HOST: str
