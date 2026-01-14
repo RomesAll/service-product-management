@@ -3,6 +3,7 @@ from redis import Redis
 from pydantic import BaseModel
 from fastapi import Request
 import hashlib, json, functools
+from fastapi.encoders import jsonable_encoder
 
 ALLOWED_OBJECTS_CACHE = (int, float, str, bool, dict, list, BaseModel, Request)
 
@@ -27,7 +28,8 @@ def redis_cache(expire: int = 10, namespace: str = 'nonamespace'):
                 if redis_client.exists(cache_key):
                     return json.loads(redis_client.get(cache_key))
                 response = func(*args, **kwargs)
-                redis_client.set(cache_key, json.dumps(response), ex=expire)
+                pre_json_response = jsonable_encoder(response)
+                redis_client.set(cache_key, json.dumps(pre_json_response), ex=expire)
                 return response
         return wrapper
     return decorator

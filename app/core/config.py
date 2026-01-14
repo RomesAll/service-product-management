@@ -52,8 +52,8 @@ class AuthTokenSettings(Base):
     private_key_path: Path = BASE_DIR / 'app' / 'certs' / 'jwt-private.pem'
     public_key_path: Path = BASE_DIR / 'app' / 'certs' / 'jwt-public.pem'
     algorithm: str = 'RS256'
-    access_token_exp: int = 60 # second
-    refresh_token_exp: int = 120 # second
+    access_token_exp: int = 360 # second
+    refresh_token_exp: int = 500 # second
 
 class Settings(BaseSettings):
     postgres: PostgresSettings = PostgresSettings()
