@@ -1,10 +1,12 @@
+import time
+
 from app.core import settings
 from redis import Redis
 from pydantic import BaseModel
 from fastapi import Request
 import hashlib, json, functools
 from fastapi.encoders import jsonable_encoder
-from fastapi.responses import StreamingResponse
+from fastapi.responses import Response
 
 ALLOWED_OBJECTS_CACHE = (int, float, str, bool, dict, list, BaseModel, Request)
 
@@ -29,7 +31,7 @@ def redis_cache(expire: int = 10, namespace: str = 'nonamespace'):
                 if redis_client.exists(cache_key):
                     raw_string = redis_client.get(cache_key)
                     data = str(raw_string, 'utf-8')
-                    return StreamingResponse(content=data, status_code=200, headers={
+                    return Response(content=data, status_code=200, headers={
                         'x-fastapi-cache': 'HIT',
                         'content-type': 'application/json'
                     })
@@ -37,7 +39,7 @@ def redis_cache(expire: int = 10, namespace: str = 'nonamespace'):
                 pre_json_response = jsonable_encoder(response)
                 json_response = json.dumps(pre_json_response, ensure_ascii=False)
                 redis_client.set(cache_key, json_response, ex=expire)
-                return StreamingResponse(content=json_response, status_code=200, headers={
+                return Response(content=json_response, status_code=200, headers={
                     'x-fastapi-cache': 'MISS',
                     'content-type': 'application/json'
                 })

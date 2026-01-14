@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from redis import Redis
 from app.core import settings
 
-engine = create_engine(url=settings.postgres.get_database_url_sync, echo=True)
+engine = create_engine(url=settings.postgres.get_database_url_sync, echo=False)
 session_maker = sessionmaker(bind=engine, expire_on_commit=False, autoflush=False, autocommit=False)
 
 def get_current_time() -> datetime:
