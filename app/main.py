@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Request, Response
 from core import settings
 from app.api.v1 import procurements_router, type_products_router, products_router, auth_router, users_router
+from app.api.v2 import (procurements_router as procurements_router_v2,
+                        products_router as products_router_v2)
 from app.core.exception_handlers import exception_handler
 from app.core.logging_config import *
 import uvicorn, time
@@ -12,6 +14,8 @@ app.include_router(type_products_router)
 app.include_router(procurements_router)
 app.include_router(auth_router)
 app.include_router(users_router)
+app.include_router(procurements_router_v2)
+app.include_router(products_router_v2)
 
 def logging_request(request: Request, response: Response, time_processing):
     message = ("client: {0} url: {1} method: {2} status: {3} time: {4}"
