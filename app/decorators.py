@@ -1,5 +1,3 @@
-import time
-
 from app.core import settings
 from redis import Redis
 from pydantic import BaseModel
