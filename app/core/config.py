@@ -1,7 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import SecretStr
-from redis import Redis
 from pathlib import Path
+from pika import URLParameters
 import sys, logging
 
 BASE_DIR = Path(__file__).parent.parent.parent
@@ -45,8 +45,7 @@ class RabbitMQSettings(Base):
 
     @property
     def get_rabbitmq_url(self):
-        return (f'amqp://{self.RMQ_USER}:{self.RMQ_PASS.get_secret_value()}@'
-                f'{self.RMQ_HOST}:{self.RMQ_PORT}')
+        return URLParameters(f"amqp://{self.RMQ_USER}:{self.RMQ_PASS.get_secret_value()}@{self.RMQ_HOST}:{self.RMQ_PORT}")
 
 class AuthTokenSettings(Base):
     private_key_path: Path = BASE_DIR / 'app' / 'certs' / 'jwt-private.pem'

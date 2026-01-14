@@ -19,12 +19,12 @@ def get_session():
     finally:
         session.close()
 
-def get_redis_session():
+def get_redis():
     try:
-        connection = Redis.from_url(settings.redis.get_redis_url)
-        yield connection
+        redis = Redis.from_url(settings.redis.get_redis_url)
+        yield redis
     finally:
-        connection.close()
+        redis.close()
 
 def validate_access_token(token: HTTPAuthorizationCredentials = Depends(http_bearer)):
     if token is None or not token.credentials:
