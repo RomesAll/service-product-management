@@ -2,10 +2,7 @@ from fastapi import FastAPI, Request, Response
 from core import settings
 from app.api.v1 import procurements_router, type_products_router, products_router, auth_router, users_router
 from app.core.exception_handlers import exception_handler
-from datetime import datetime, timezone
 from app.core.logging_config import *
-from app.schemas import UsersPOSTSchemas
-from app.decorators import redis_cache
 import uvicorn, time
 
 app = FastAPI()
@@ -33,8 +30,7 @@ async def process_request(request: Request, call_next):
     time_start = time.time()
     response = await call_next(request)
     end_time = time.time() - time_start
-    response.headers["X-Processing-Time-ms"] = str(end_time.__round__(4))
-    response.headers['X-Date-Request'] = str(datetime.now(timezone.utc))
+    response.headers["x-processing-time"] = str(end_time.__round__(4))
     logging_request(request, response, end_time)
     return response
 
