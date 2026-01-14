@@ -52,8 +52,8 @@ class AuthTokenSettings(Base):
     private_key_path: Path = BASE_DIR / 'app' / 'certs' / 'jwt-private.pem'
     public_key_path: Path = BASE_DIR / 'app' / 'certs' / 'jwt-public.pem'
     algorithm: str = 'RS256'
-    access_token_exp: int = 360 # second
-    refresh_token_exp: int = 500 # second
+    access_token_exp: int = 36000 # second
+    refresh_token_exp: int = 50000 # second
 
 class Settings(BaseSettings):
     postgres: PostgresSettings = PostgresSettings()
@@ -61,5 +61,6 @@ class Settings(BaseSettings):
     redis: RedisSettings = RedisSettings()
     auth: AuthTokenSettings = AuthTokenSettings()
     logger: logging.Logger = logging.getLogger('app')
+    logger_requests: logging.Logger = logging.getLogger('app-request')
 
 settings = Settings()

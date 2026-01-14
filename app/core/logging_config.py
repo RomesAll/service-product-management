@@ -39,3 +39,6 @@ logging_setup.create_handler_console(level=logging.DEBUG)
 logging_setup.create_handler_file(filename=f'{BASE_DIR}/app/logs/info.log', filemode='a', level=logging.INFO)
 logging_setup.create_handler_file(filename=f'{BASE_DIR}/app/logs/warning.log', filemode='a', level=logging.WARNING)
 logging_setup.create_handler_file(filename=f'{BASE_DIR}/app/logs/error.log', filemode='a', level=logging.ERROR)
+
+logging_request = LoggingSettings(logger_name="app-request", level="DEBUG")
+logging_request.create_handler_file(filename=f'{BASE_DIR}/app/logs/request.log', filemode='a', level=logging.INFO)

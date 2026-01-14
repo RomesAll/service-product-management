@@ -16,22 +16,14 @@ app.include_router(users_router)
 def logging_request(request: Request, response: Response, time_processing):
     message = ("client: {0} url: {1} method: {2} status: {3} time: {4}"
                .format(request.client.host, request.url, request.method, response.status_code, time_processing))
-    if request.url.path in ["/health-check", '/docs', '/favicon.ico', '/openapi.json']:
-        settings.logger.debug(message)
-    if 100 <= response.status_code < 400:
-        settings.logger.info(message)
-    if 400 <= response.status_code < 500:
-        settings.logger.warning(message)
-    if 500 <= response.status_code < 600:
-        settings.logger.error(message)
-    return message
+    settings.logger_requests.info(message)
 
 @app.middleware("http")
 async def process_request(request: Request, call_next):
     time_start = time.time()
     response = await call_next(request)
-    end_time = time.time() - time_start
-    response.headers["x-processing-time"] = str(end_time.__round__(4))
+    end_time = str((time.time() - time_start).__round__(4))
+    response.headers["x-processing-time"] = end_time
     logging_request(request, response, end_time)
     return response
 
