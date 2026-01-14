@@ -18,12 +18,13 @@ def logging_request(request: Request, response: Response, time_processing):
                .format(request.client.host, request.url, request.method, response.status_code, time_processing))
     if request.url.path in ["/health-check", '/docs', '/favicon.ico', '/openapi.json']:
         settings.logger.debug(message)
-    elif 100 <= response.status_code < 400:
+    if 100 <= response.status_code < 400:
         settings.logger.info(message)
-    elif 400 <= response.status_code < 500:
+    if 400 <= response.status_code < 500:
         settings.logger.warning(message)
-    elif 500 <= response.status_code < 600:
+    if 500 <= response.status_code < 600:
         settings.logger.error(message)
+    return message
 
 @app.middleware("http")
 async def process_request(request: Request, call_next):
