@@ -5,6 +5,7 @@ from app.api.v2 import (procurements_router as procurements_router_v2,
                         products_router as products_router_v2)
 from app.core.exception_handlers import exception_handler
 from app.core.logging_config import *
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn, time
 
 app = FastAPI()
@@ -16,6 +17,7 @@ app.include_router(auth_router)
 app.include_router(users_router)
 app.include_router(procurements_router_v2)
 app.include_router(products_router_v2)
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 def logging_request(request: Request, response: Response, time_processing):
     message = ("client: {0} url: {1} method: {2} status: {3} time: {4}"
@@ -31,7 +33,7 @@ async def process_request(request: Request, call_next):
     logging_request(request, response, end_time)
     return response
 
-@app.post("/health-check")
+@app.get("/health-check")
 def health_check():
     return {"status": "ok"}
 

@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Request, Depends
 from app.service import ProcurementService
-from app.schemas import *
 from app.dependencies import session_dep, pagination_dep, validate_active_user
 from app.decorators import redis_cache
 import uuid

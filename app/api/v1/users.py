@@ -2,7 +2,6 @@ from fastapi import APIRouter, Request, Depends
 from app.service import UsersService
 from app.schemas import *
 from app.dependencies import session_dep, pagination_dep, validate_active_user
-from app.decorators import redis_cache
 from uuid import UUID
 
 router = APIRouter(prefix="/api/v1/users", tags=["Users"], dependencies=[Depends(validate_active_user)])
