@@ -37,6 +37,18 @@ class PostgresSettings(Base):
         return (f'postgresql+psycopg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD.get_secret_value()}@'
                 f'{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}')
 
+class TelegramSettings(Base):
+    TELEGRAM_TOKEN: SecretStr
+    TELEGRAM_CHAT_ID: str
+
+    @property
+    def get_telegram_url_send_msg(self):
+        return f"https://api.telegram.org/bot{self.TELEGRAM_TOKEN.get_secret_value()}/sendMessage"
+
+    @property
+    def get_telegram_url_updates_msg(self):
+        return f"https://api.telegram.org/bot{self.TELEGRAM_TOKEN.get_secret_value()}/getUpdates"
+
 class RabbitMQSettings(Base):
     RMQ_HOST: str
     RMQ_PORT: int
@@ -61,5 +73,6 @@ class Settings(BaseSettings):
     auth: AuthTokenSettings = AuthTokenSettings()
     logger: logging.Logger = logging.getLogger('app')
     logger_requests: logging.Logger = logging.getLogger('app-request')
+    telegram: TelegramSettings = TelegramSettings()
 
 settings = Settings()
