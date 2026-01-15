@@ -102,6 +102,17 @@ services:
     networks:
       - dbnet
 
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    networks:
+      - dbnet
+
 networks:
   dbnet:
     driver: bridge
