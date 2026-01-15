@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "name": "API Gateway",
+  "port": 8085,
+  "cache_ttl": "300ms",
+  "endpoints": [
+    {
+      "endpoint": "/health-check",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/health-check",
+          "host": ["http://service_product_management:8000"]
+        }
+      ]
+    }
+  ]
+}
