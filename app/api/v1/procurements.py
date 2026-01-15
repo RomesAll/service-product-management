@@ -2,7 +2,8 @@ from fastapi import APIRouter, Request, Depends
 from app.service import ProcurementService
 from app.schemas import *
 from app.dependencies import session_dep, pagination_dep, validate_active_user
-from app.decorators import redis_cache
+from app.rabbitmq.publisher import publish_telegram_bot_message
+from fastapi.encoders import jsonable_encoder
 import uuid
 
 router = APIRouter(prefix="/api/v1/procurements", tags=["Procurements"], dependencies=[Depends(validate_active_user)])
@@ -20,6 +21,7 @@ def get_records_by_id(request: Request, id: uuid.UUID, session: session_dep):
 @router.post('/')
 def create_records(request: Request, dto_model: ProcurementPOSTSchemas, session: session_dep):
     result = ProcurementService(session, request.client.host).create_records(dto_model)
+    publish_telegram_bot_message(event='Add', title='Procurement', message=jsonable_encoder(result))
     return {'message': result}
 
 @router.put('/')

@@ -6,3 +6,4 @@
 /app/db/migrations/versions/*.py
 /app/certs/
 /app/logs/
+/app/rabbitmq/responses_tg.txt
