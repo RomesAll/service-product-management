@@ -1,17 +1,28 @@
-from pika import BlockingConnection, ConnectionParameters, PlainCredentials
+from pika import BlockingConnection
 from datetime import datetime, timezone
+from app.core import settings
+import requests
 
-connection_parameters = ConnectionParameters(
-    host='127.0.0.1',
-    port=5672,
-    credentials=PlainCredentials(username='guest', password='guest')
-)
+def writing_to_file(response):
+    try:
+        with open('./responses_tg.txt', 'a') as file:
+            file.write(f"{datetime.now(tz=timezone.utc).strftime('%Y-%m-%d (%H:%M)')} - {response}\n")
+    except Exception as e:
+        print('Не удалось записать ответ в файл', e)
 
 def processing_message(ch, method, properties, body: bytes):
-    pass
+    try:
+        url = settings.telegram.get_telegram_url_send_msg
+        params = {'chat_id': settings.telegram.TELEGRAM_BOT_CHAT_ID, 'text': {body.decode('utf-8')}}
+        response = requests.post(url, params=params)
+        abc = response.json()
+        writing_to_file(response.json())
+        ch.basic_ack(delivery_tag=method.delivery_tag)
+    except Exception as e:
+        ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
 
 def main():
-    with BlockingConnection(parameters=connection_parameters) as connection:
+    with BlockingConnection(parameters=settings.rabbitmq.get_rabbitmq_url) as connection:
         with connection.channel() as channel:
             channel.exchange_declare(exchange='telegram_exchange', exchange_type='direct', durable=True)
             telegram_queue = channel.queue_declare(queue='telegram_queue', durable=True)

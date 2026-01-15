@@ -38,16 +38,16 @@ class PostgresSettings(Base):
                 f'{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}')
 
 class TelegramSettings(Base):
-    TELEGRAM_TOKEN: SecretStr
-    TELEGRAM_CHAT_ID: str
+    TELEGRAM_BOT_TOKEN: SecretStr
+    TELEGRAM_BOT_CHAT_ID: str
 
     @property
     def get_telegram_url_send_msg(self):
-        return f"https://api.telegram.org/bot{self.TELEGRAM_TOKEN.get_secret_value()}/sendMessage"
+        return f"https://api.telegram.org/bot{self.TELEGRAM_BOT_TOKEN.get_secret_value()}/sendMessage"
 
     @property
     def get_telegram_url_updates_msg(self):
-        return f"https://api.telegram.org/bot{self.TELEGRAM_TOKEN.get_secret_value()}/getUpdates"
+        return f"https://api.telegram.org/bot{self.TELEGRAM_BOT_TOKEN.get_secret_value()}/getUpdates"
 
 class RabbitMQSettings(Base):
     RMQ_HOST: str
